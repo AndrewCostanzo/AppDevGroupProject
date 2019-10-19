@@ -19,6 +19,11 @@ public class MainTester {
     Result result = junit.run(CreateDDLMySQLTest.class);
     System.out.printf("Tests run: %s, Failed: %s%n",
 	 result.getRunCount(), result.getFailureCount());
+    
+    System.out.println("    Running Edge Field Tester...");
+    result = junit.run(EdgeFieldTest.class);
+    System.out.printf("Tests run: %s, Failed: %s%n",
+	 result.getRunCount(), result.getFailureCount());
 
     System.out.println("\n--- FINISH TESTING ---\n");
     System.out.println("*** END OF MAIN TESTER ***");
