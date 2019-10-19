@@ -17,16 +17,6 @@ public class CreateDDLMySQLTest{
    }
 
    public void runner(){
-      nonEmptyEdgeTables();
-      nonEmptyEdgeFields();
-      nonEmptyDBName();
-      DBNameEntered();
-      testProductName();
-      testTrueStrBool();
-      testFalseStrBool();
-      testRandomInputStrBool();
-      testToString();
-      createDDLDoesntError();
    }
    
    
