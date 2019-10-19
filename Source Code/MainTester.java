@@ -24,6 +24,16 @@ public class MainTester {
     result = junit.run(EdgeFieldTest.class);
     System.out.printf("Tests run: %s, Failed: %s%n",
 	 result.getRunCount(), result.getFailureCount());
+    
+    System.out.println("    Running Edge File Parser Tester...");
+    result = junit.run(EdgeConvertFileParserTest.class);
+    System.out.printf("Tests run: %s, Failed: %s%n",
+	 result.getRunCount(), result.getFailureCount());
+    
+    System.out.println("    Running Edge Table Tester...");
+    result = junit.run(EdgeTableTest.class);
+    System.out.printf("Tests run: %s, Failed: %s%n",
+	 result.getRunCount(), result.getFailureCount());
 
     System.out.println("\n--- FINISH TESTING ---\n");
     System.out.println("*** END OF MAIN TESTER ***");
