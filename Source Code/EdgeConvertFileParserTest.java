@@ -35,7 +35,6 @@ public class EdgeConvertFileParserTest {
       }
    }
    
-   
    @Test
    public void openFileDoesntError(){
       try{
@@ -43,6 +42,20 @@ public class EdgeConvertFileParserTest {
          assertTrue("Open File method doesn't throw an error", 1 == 1);
       }catch(Exception e){
          assertFalse("Open File method does throw an error", 0 == 0);
+      }
+   }
+   
+   @Test
+   public void openFileIsFileFound(){
+      try{
+         File fakeFile = new File("fake.edg");
+         testObj.openFile(fakeFile);
+         assertTrue("Open File method has found the file", 1 == 1);
+      }catch(Exception e){
+         Throwable cause = e.getCause(); 
+         if(cause.toString() == "FileNotFoundException"){
+            assertFalse("Open File method could not find the file", 0 == 0);
+         }
       }
    }
    
