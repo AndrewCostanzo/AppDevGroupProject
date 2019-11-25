@@ -54,7 +54,7 @@ public class EdgeConvertGUI {
    static DefaultListModel dlmDTTablesAll, dlmDTFieldsTablesAll;
    static JMenuBar jmbDTMenuBar;
    static JMenu jmDTFile, jmDTOptions, jmDTHelp;
-   static JMenuItem jmiDTOpenEdge, jmiDTOpenSave, jmiDTSave, jmiDTSaveAs, jmiDTExit, jmiDTOptionsOutputLocation, jmiDTOptionsShowProducts, jmiDTHelpAbout;
+   static JMenuItem jmiDTOpenEdge, jmiDTOpenSave, jmiDTSave, jmiDTSaveAs, jmiDTExit, jmiDTOptionsOutputLocation, jmiDTOptionsShowProducts, jmiDTHelpAbout, jmiDTHelpMenuOptions;
    
    //Define Relations screen objects
    static JFrame jfDR;
@@ -66,7 +66,7 @@ public class EdgeConvertGUI {
    static JScrollPane jspDRTablesRelations, jspDRTablesRelatedTo, jspDRFieldsTablesRelations, jspDRFieldsTablesRelatedTo;
    static JMenuBar jmbDRMenuBar;
    static JMenu jmDRFile, jmDROptions, jmDRHelp;
-   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout;
+   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout, jmiDRHelpMenuOptions;
    
    public EdgeConvertGUI() {
       menuListener = new EdgeMenuListener();
@@ -142,11 +142,17 @@ public class EdgeConvertGUI {
       jmDTHelp = new JMenu("Help");
       jmDTHelp.setMnemonic(KeyEvent.VK_H);
       jmbDTMenuBar.add(jmDTHelp);
-      jmiDTHelpAbout = new JMenuItem("About");
-      jmiDTHelpAbout.setMnemonic(KeyEvent.VK_A);
-      jmiDTHelpAbout.addActionListener(menuListener);
-      jmDTHelp.add(jmiDTHelpAbout);
       
+      jmiDTHelpAbout = new JMenuItem("About");
+      jmiDTHelpMenuOptions = new JMenuItem("Menu Options");
+      
+      jmiDTHelpAbout.setMnemonic(KeyEvent.VK_A);
+      
+      jmiDTHelpAbout.addActionListener(menuListener);
+      jmiDTHelpMenuOptions.addActionListener(menuListener);
+      jmDTHelp.add(jmiDTHelpAbout);
+      jmDTHelp.add(jmiDTHelpMenuOptions);
+
       jfcEdge = new JFileChooser();
       jfcOutputDir = new JFileChooser();
 	   effEdge = new ExampleFileFilter("edg", "Edge Diagrammer Files");
@@ -527,9 +533,12 @@ public class EdgeConvertGUI {
       jmDRHelp.setMnemonic(KeyEvent.VK_H);
       jmbDRMenuBar.add(jmDRHelp);
       jmiDRHelpAbout = new JMenuItem("About");
+      jmiDRHelpMenuOptions = new JMenuItem("Menu Options");
       jmiDRHelpAbout.setMnemonic(KeyEvent.VK_A);
       jmiDRHelpAbout.addActionListener(menuListener);
+      jmiDRHelpMenuOptions.addActionListener(menuListener);
       jmDRHelp.add(jmiDRHelpAbout);
+      jmDRHelp.add(jmiDRHelpMenuOptions);
 
       jpDRCenter = new JPanel(new GridLayout(2, 2));
       jpDRCenter1 = new JPanel(new BorderLayout());
@@ -1274,6 +1283,53 @@ public class EdgeConvertGUI {
                                                 "by Stephen A. Capperell\n" +
                                                 "© 2007-2008");
          }
+         
+         //This is when someone clicks on "Menu Options" help tab
+         if( (ae.getSource() == jmiDTHelpMenuOptions) || (ae.getSource() == jmiDRHelpMenuOptions) ){
+            JTabbedPane tabbedPane = new JTabbedPane();
+            
+            JComponent openEdgeTab = makeTextPanel("<html><h1>Opening Edge Files</h1><br/>This menu option allows you to select a file with .edg as it’s extension. This will be used<br/>to populate the <strong>All Tables</strong> column with the table information from the file.</html>");
+            tabbedPane.addTab("Edge Files", null, openEdgeTab, "Opening edge files");
+            
+            JComponent openSaveFileTab = makeTextPanel("<html><h1>Opening Save Files</h1></br>This menu option allows you to select a file that has the .sav file extension. This allows<br/>you to reuse a file that you have saved in this program before.</html>");
+            tabbedPane.addTab("Save Files", null, openSaveFileTab, "Opening save files");
+            
+            JComponent saveTab = makeTextPanel("<html><h1>Saving your files</h1></br>This menu option allows you to save to the currently loaded Save File. This option will<br/>not be available if a file has not been loaded into the program.</html>");
+            tabbedPane.addTab("Saving",null, saveTab, "Saving your files");
+            
+            JComponent saveAsTab = makeTextPanel("<html><h1>Saving Your Files With A Name</h1></br>This menu option allows you to create a new Save File for your Edge File. This option<br/>will not be available if a file has not been loaded into the program.</html>");
+            tabbedPane.addTab("Save As", null, saveAsTab, "Saving your files");
+            
+            JComponent outputTab = makeTextPanel("<html><h1>Output File Definition Location</h1></br>This menu option allows you to select the directory that you would like your output<br/>files to be saved to. Please note that the directory you want to use must have a valid output definition file before it may be selected.</html>");
+            tabbedPane.addTab("Output File",null, outputTab, "Output File Definition Location");
+            
+            JComponent showDBProductsTab = makeTextPanel("<html><h1>Available Database Products</h1></br>This menu option displays the current database products that can be used with this\napplication. This option will not be available if a file has not been loaded into the program.</html>");
+            tabbedPane.addTab("Database Products",null, showDBProductsTab, "Show Database Products Available");
+            
+            JComponent exitTab = makeTextPanel("<html><h1>Closing The Application</h1></br>This option <strong>closes</strong> the application.</html>");
+            tabbedPane.addTab("Exit",null, exitTab, "Exiting the application");
+            
+            JFrame helpBox = new JFrame();
+            
+            helpBox.add(tabbedPane);
+            helpBox.setVisible(true);
+            helpBox.setSize(450,200);
+            helpBox.setTitle("Menu Option Help Documentation");
+            tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+            
+         } 
+         
       } // EdgeMenuListener.actionPerformed()
    } // EdgeMenuListener
+   
+   private JComponent makeTextPanel(String text){
+      JPanel panel = new JPanel(false);
+      JLabel filler = new JLabel(text);
+      filler.setHorizontalAlignment(JLabel.LEFT);
+      filler.setVerticalAlignment(JLabel.TOP);
+      panel.setLayout(new GridLayout(1,1));
+      panel.add(filler);
+      return panel;
+   }
+   
 } // EdgeConvertGUI
