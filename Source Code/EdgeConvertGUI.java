@@ -66,7 +66,7 @@ public class EdgeConvertGUI {
    static JScrollPane jspDRTablesRelations, jspDRTablesRelatedTo, jspDRFieldsTablesRelations, jspDRFieldsTablesRelatedTo;
    static JMenuBar jmbDRMenuBar;
    static JMenu jmDRFile, jmDROptions, jmDRHelp;
-   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout, jmiDRHelpMenuOptions, jmiDTHelpTables, jmiDTHelpList, jmiDTHelpDDL;
+   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout, jmiDRHelpMenuOptions, jmiDTHelpDefineTables;
    
    public EdgeConvertGUI() {
       menuListener = new EdgeMenuListener();
@@ -144,25 +144,17 @@ public class EdgeConvertGUI {
       jmbDTMenuBar.add(jmDTHelp);
       
       jmiDTHelpAbout = new JMenuItem("About");
-      jmiDTHelpTables = new JMenuItem("All Tables Section");
-      jmiDTHelpList = new JMenuItem("Field List Section");
-      jmiDTHelpDDL = new JMenuItem("How to Create a DDL");
+      jmiDTHelpDefineTables = new JMenuItem("Define Tabples Help");
       jmiDTHelpMenuOptions = new JMenuItem("Menu Options");
       
       jmiDTHelpAbout.setMnemonic(KeyEvent.VK_A);
-      jmiDTHelpTables.setMnemonic(KeyEvent.VK_A);
-      jmiDTHelpList.setMnemonic(KeyEvent.VK_A);
-      jmiDTHelpDDL.setMnemonic(KeyEvent.VK_A);
+      jmiDTHelpDefineTables.setMnemonic(KeyEvent.VK_A);
       
       jmiDTHelpAbout.addActionListener(menuListener);
-      jmiDTHelpTables.addActionListener(menuListener);
-      jmiDTHelpList.addActionListener(menuListener);
-      jmiDTHelpDDL.addActionListener(menuListener);
+      jmiDTHelpDefineTables.addActionListener(menuListener);
       jmiDTHelpMenuOptions.addActionListener(menuListener);
       jmDTHelp.add(jmiDTHelpAbout);
-      jmDTHelp.add(jmiDTHelpTables);
-      jmDTHelp.add(jmiDTHelpList);
-      jmDTHelp.add(jmiDTHelpDDL);
+      jmDTHelp.add(jmiDTHelpDefineTables);
       jmDTHelp.add(jmiDTHelpMenuOptions);
 
       jfcEdge = new JFileChooser();
@@ -1295,29 +1287,26 @@ public class EdgeConvertGUI {
                                                 "by Stephen A. Capperell\n" +
                                                 "Â© 2007-2008");
          }
-         if ((ae.getSource() == jmiDTHelpTables) || (ae.getSource() == jmiDTHelpTables)) {
-            JOptionPane.showMessageDialog(null, "This section shows all of the tables that\n" +
-					  	"have been imported into the program from\n" +
-					  	"the currently loaded file. To edit the fields\n" +
-					  	"within a table, click on the table that you\n" +
-					  	"wish to edit and select a field from the Field\n" +
-					  	"List section.");
-         }
-         if ((ae.getSource() == jmiDTHelpList) || (ae.getSource() == jmiDTHelpList)) {
-            JOptionPane.showMessageDialog(null, "This section displays all of the fields for a\n" +
-					  	"selected table. If there is no table selected\n" +
-					  	"it will be empty. Select a field to edit it's\n" +
-					  	"properties. When you select a field, it's values\n" +
-					  	"will be displayed on the right where you can edit them.");
-         }
-         if ((ae.getSource() == jmiDTHelpDDL) || (ae.getSource() == jmiDTHelpDDL)) {
-            JOptionPane.showMessageDialog(null, "To create a DDL you must first Set an Output File\n" +
-					  	"Definition Location so that the file may be saved.\n" +
-					  	"After you have done this, click the Create DDL button\n" +
-					  	"at the bottom of the application. It will ask you to\n" +
-					  	"select the database product you want to use and what\n" +
-					  	"the database name is. It will then open a file selection\n" +
-					  	"screen allowing you to save the file.");
+         if ((ae.getSource() == jmiDTHelpDefineTables) || (ae.getSource() == jmiDTHelpDefineTables)) {
+            JTabbedPane tabbedPane = new JTabbedPane();
+            
+            JComponent openEdgeTab = makeTextPanel("<html><h1>All Tables Section</h1><br/>This section shows all of the tables that have been imported into the program from the currently loaded file. To edit the fields within a table, click on the table that you wish to edit and select a field from the Field List section.</html>");
+            tabbedPane.addTab("All Tables", null, openEdgeTab, "All Tables Section");
+            
+            JComponent openSaveFileTab = makeTextPanel("<html><h1>Field List Section</h1></br>This section displays all of the fields for a selected table. If there is no table selected it will be empty. Select a field to edit it’s properties. When you select a field, it’s values will be displayed on the right where you can edit them.</html>");
+            tabbedPane.addTab("Field List", null, openSaveFileTab, "Field List Section");
+            
+            JComponent saveTab = makeTextPanel("<html><h1>How to Create a DDL</h1></br>To create a DDL you must first Set an Output File Definition Location so that the file may be saved. After you have done this, click the Create DDL button at the bottom of the application. It will ask you to select the database product you want to use and what the database name is. It will then open a file selection screen allowing you to save the file.</html>");
+            tabbedPane.addTab("Create a DDL",null, saveTab, "How to Create a DDL");
+            
+            JFrame helpBox = new JFrame();
+            
+            helpBox.add(tabbedPane);
+            helpBox.setVisible(true);
+            helpBox.setSize(450,200);
+            helpBox.setTitle("Define Tables Page Help Documentation");
+            tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+            
          }
          
          //This is when someone clicks on "Menu Options" help tab
