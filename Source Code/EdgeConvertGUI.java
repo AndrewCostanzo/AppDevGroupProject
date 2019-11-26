@@ -1295,7 +1295,7 @@ public class EdgeConvertGUI {
                                                 "by Stephen A. Capperell\n" +
                                                 "© 2007-2008");
          }
-         if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDTHelpTables)) {
+         if ((ae.getSource() == jmiDTHelpTables) || (ae.getSource() == jmiDTHelpTables)) {
             JOptionPane.showMessageDialog(null, "This section shows all of the tables that\n" +
 					  	"have been imported into the program from\n" +
 					  	"the currently loaded file. To edit the fields\n" +
@@ -1303,14 +1303,14 @@ public class EdgeConvertGUI {
 					  	"wish to edit and select a field from the Field\n" +
 					  	"List section.");
          }
-         if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDTHelpList)) {
+         if ((ae.getSource() == jmiDTHelpList) || (ae.getSource() == jmiDTHelpList)) {
             JOptionPane.showMessageDialog(null, "This section displays all of the fields for a\n" +
 					  	"selected table. If there is no table selected\n" +
-					  	"it will be empty. Select a field to edit it’s\n" +
-					  	"properties. When you select a field, it’s values\n" +
+					  	"it will be empty. Select a field to edit it's\n" +
+					  	"properties. When you select a field, it's values\n" +
 					  	"will be displayed on the right where you can edit them.");
          }
-         if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDTHelpDDL)) {
+         if ((ae.getSource() == jmiDTHelpDDL) || (ae.getSource() == jmiDTHelpDDL)) {
             JOptionPane.showMessageDialog(null, "To create a DDL you must first Set an Output File\n" +
 					  	"Definition Location so that the file may be saved.\n" +
 					  	"After you have done this, click the Create DDL button\n" +
