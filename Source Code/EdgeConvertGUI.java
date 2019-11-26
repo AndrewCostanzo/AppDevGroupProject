@@ -54,7 +54,7 @@ public class EdgeConvertGUI {
    static DefaultListModel dlmDTTablesAll, dlmDTFieldsTablesAll;
    static JMenuBar jmbDTMenuBar;
    static JMenu jmDTFile, jmDTOptions, jmDTHelp;
-   static JMenuItem jmiDTOpenEdge, jmiDTOpenSave, jmiDTSave, jmiDTSaveAs, jmiDTExit, jmiDTOptionsOutputLocation, jmiDTOptionsShowProducts, jmiDTHelpAbout, jmiDTHelpMenuOptions;
+   static JMenuItem jmiDTOpenEdge, jmiDTOpenSave, jmiDTSave, jmiDTSaveAs, jmiDTExit, jmiDTOptionsOutputLocation, jmiDTOptionsShowProducts, jmiDTHelpAbout, jmiDTHelpMenuOptions, jmiDTHelpDefineRelationsPage;
    
    //Define Relations screen objects
    static JFrame jfDR;
@@ -66,7 +66,7 @@ public class EdgeConvertGUI {
    static JScrollPane jspDRTablesRelations, jspDRTablesRelatedTo, jspDRFieldsTablesRelations, jspDRFieldsTablesRelatedTo;
    static JMenuBar jmbDRMenuBar;
    static JMenu jmDRFile, jmDROptions, jmDRHelp;
-   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout, jmiDRHelpMenuOptions, jmiDTHelpDefineTables;
+   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout, jmiDRHelpMenuOptions, jmiDTHelpDefineTables, jmiDRHelpDefineRelationsPage;
    
    public EdgeConvertGUI() {
       menuListener = new EdgeMenuListener();
@@ -144,7 +144,8 @@ public class EdgeConvertGUI {
       jmbDTMenuBar.add(jmDTHelp);
       
       jmiDTHelpAbout = new JMenuItem("About");
-      jmiDTHelpDefineTables = new JMenuItem("Define Tabples Help");
+      jmiDTHelpDefineTables = new JMenuItem("Define Tables Help");
+      jmiDTHelpDefineRelationsPage = new JMenuItem("Define Relations Page");
       jmiDTHelpMenuOptions = new JMenuItem("Menu Options");
       
       jmiDTHelpAbout.setMnemonic(KeyEvent.VK_A);
@@ -152,9 +153,12 @@ public class EdgeConvertGUI {
       
       jmiDTHelpAbout.addActionListener(menuListener);
       jmiDTHelpDefineTables.addActionListener(menuListener);
+      jmiDTHelpDefineRelationsPage.addActionListener(menuListener);
       jmiDTHelpMenuOptions.addActionListener(menuListener);
+      
       jmDTHelp.add(jmiDTHelpAbout);
       jmDTHelp.add(jmiDTHelpDefineTables);
+      jmDTHelp.add(jmiDTHelpDefineRelationsPage);
       jmDTHelp.add(jmiDTHelpMenuOptions);
 
       jfcEdge = new JFileChooser();
@@ -1343,6 +1347,29 @@ public class EdgeConvertGUI {
             tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
             
          } 
+         
+         // this is when someone clicks on "Define Relations Page" help tab
+         if( (ae.getSource() == jmiDTHelpDefineRelationsPage) || (ae.getSource() == jmiDRHelpDefineRelationsPage) ){
+            JTabbedPane tabbedPane = new JTabbedPane();
+            
+            JComponent tablesWithRelationsTab = makeTextPanel("<html><h1>Tables With Relations Section</h1><br/>This section displays all of the tables that have relations, and is retrieved<br/>from the currently loaded file. When you select a table within this section </br>it will then display all the fields within that table that have relations, and </br>the tables it has relations with.</html>");
+            tabbedPane.addTab("Tables With Relations", null, tablesWithRelationsTab, "Tables With Relations");
+            
+            JComponent relatedTablesTab = makeTextPanel("<html><h1>Related Tables Section</h1></br>If a table has not been selected in the Tables With Relations section, there<br/>will be no data within this section. When you select a table from this </br>section it will then display all the fields within that table that have relations.</html>");
+            tabbedPane.addTab("Related Tables", null, relatedTablesTab, "Related Tables");
+            
+            JComponent bindingAndUnbindingRelationsTab = makeTextPanel("<html><h1>Binding/Unbinding Relations</h1></br>To bind or unbind two fields you must first select the two fields you wish </br>to bind/unbind within the Fields in Tables with Relations section and the </br>Fields in Related Tables section. After the two fields are selected press the </br>button located towards the bottom of the application that says “Bind/Unbind </br>Relation”. If the two fields are already bound it will ask for </br>confirmation before unbinding the fields. If the fields are not bound, pressing the button </br>will bind them together.</html>");
+            tabbedPane.addTab("Binding/Unbinding Relations", null, bindingAndUnbindingRelationsTab, "Binding/Unbinding Relations");
+            
+            JFrame helpBox = new JFrame();
+            
+            helpBox.add(tabbedPane);
+            helpBox.setVisible(true);
+            helpBox.setSize(450,250);
+            helpBox.setTitle("Define Relations Page Help Documentation");
+            tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+            
+         }
          
       } // EdgeMenuListener.actionPerformed()
    } // EdgeMenuListener
