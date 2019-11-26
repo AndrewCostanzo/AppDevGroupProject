@@ -66,7 +66,7 @@ public class EdgeConvertGUI {
    static JScrollPane jspDRTablesRelations, jspDRTablesRelatedTo, jspDRFieldsTablesRelations, jspDRFieldsTablesRelatedTo;
    static JMenuBar jmbDRMenuBar;
    static JMenu jmDRFile, jmDROptions, jmDRHelp;
-   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout, jmiDRHelpMenuOptions;
+   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout, jmiDRHelpMenuOptions, jmiDTHelpTables, jmiDTHelpList, jmiDTHelpDDL;
    
    public EdgeConvertGUI() {
       menuListener = new EdgeMenuListener();
@@ -144,13 +144,25 @@ public class EdgeConvertGUI {
       jmbDTMenuBar.add(jmDTHelp);
       
       jmiDTHelpAbout = new JMenuItem("About");
+      jmiDTHelpTables = new JMenuItem("All Tables Section");
+      jmiDTHelpList = new JMenuItem("Field List Section");
+      jmiDTHelpDDL = new JMenuItem("How to Create a DDL");
       jmiDTHelpMenuOptions = new JMenuItem("Menu Options");
       
       jmiDTHelpAbout.setMnemonic(KeyEvent.VK_A);
+      jmiDTHelpTables.setMnemonic(KeyEvent.VK_A);
+      jmiDTHelpList.setMnemonic(KeyEvent.VK_A);
+      jmiDTHelpDDL.setMnemonic(KeyEvent.VK_A);
       
       jmiDTHelpAbout.addActionListener(menuListener);
+      jmiDTHelpTables.addActionListener(menuListener);
+      jmiDTHelpList.addActionListener(menuListener);
+      jmiDTHelpDDL.addActionListener(menuListener);
       jmiDTHelpMenuOptions.addActionListener(menuListener);
       jmDTHelp.add(jmiDTHelpAbout);
+      jmDTHelp.add(jmiDTHelpTables);
+      jmDTHelp.add(jmiDTHelpList);
+      jmDTHelp.add(jmiDTHelpDDL);
       jmDTHelp.add(jmiDTHelpMenuOptions);
 
       jfcEdge = new JFileChooser();
@@ -1279,6 +1291,21 @@ public class EdgeConvertGUI {
          }
          
          if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDRHelpAbout)) {
+            JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
+                                                "by Stephen A. Capperell\n" +
+                                                "© 2007-2008");
+         }
+         if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDTHelpTables)) {
+            JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
+                                                "by Stephen A. Capperell\n" +
+                                                "© 2007-2008");
+         }
+         if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDTHelpList)) {
+            JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
+                                                "by Stephen A. Capperell\n" +
+                                                "© 2007-2008");
+         }
+         if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDTHelpDDL)) {
             JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
                                                 "by Stephen A. Capperell\n" +
                                                 "© 2007-2008");
