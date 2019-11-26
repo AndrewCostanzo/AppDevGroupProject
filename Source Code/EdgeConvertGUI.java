@@ -1293,29 +1293,38 @@ public class EdgeConvertGUI {
          if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDRHelpAbout)) {
             JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
                                                 "by Stephen A. Capperell\n" +
-                                                "© 2007-2008");
+                                                "Â© 2007-2008");
          }
          if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDTHelpTables)) {
-            JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
-                                                "by Stephen A. Capperell\n" +
-                                                "© 2007-2008");
+            JOptionPane.showMessageDialog(null, "This section shows all of the tables that\n" +
+					  	"have been imported into the program from\n" +
+					  	"the currently loaded file. To edit the fields\n" +
+					  	"within a table, click on the table that you\n" +
+					  	"wish to edit and select a field from the Field\n" +
+					  	"List section.");
          }
          if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDTHelpList)) {
-            JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
-                                                "by Stephen A. Capperell\n" +
-                                                "© 2007-2008");
+            JOptionPane.showMessageDialog(null, "This section displays all of the fields for a\n" +
+					  	"selected table. If there is no table selected\n" +
+					  	"it will be empty. Select a field to edit itâ€™s\n" +
+					  	"properties. When you select a field, itâ€™s values\n" +
+					  	"will be displayed on the right where you can edit them.");
          }
          if ((ae.getSource() == jmiDTHelpAbout) || (ae.getSource() == jmiDTHelpDDL)) {
-            JOptionPane.showMessageDialog(null, "EdgeConvert ERD To DDL Conversion Tool\n" +
-                                                "by Stephen A. Capperell\n" +
-                                                "© 2007-2008");
+            JOptionPane.showMessageDialog(null, "To create a DDL you must first Set an Output File\n" +
+					  	"Definition Location so that the file may be saved.\n" +
+					  	"After you have done this, click the Create DDL button\n" +
+					  	"at the bottom of the application. It will ask you to\n" +
+					  	"select the database product you want to use and what\n" +
+					  	"the database name is. It will then open a file selection\n" +
+					  	"screen allowing you to save the file.");
          }
          
          //This is when someone clicks on "Menu Options" help tab
          if( (ae.getSource() == jmiDTHelpMenuOptions) || (ae.getSource() == jmiDRHelpMenuOptions) ){
             JTabbedPane tabbedPane = new JTabbedPane();
             
-            JComponent openEdgeTab = makeTextPanel("<html><h1>Opening Edge Files</h1><br/>This menu option allows you to select a file with .edg as it’s extension. This will be used<br/>to populate the <strong>All Tables</strong> column with the table information from the file.</html>");
+            JComponent openEdgeTab = makeTextPanel("<html><h1>Opening Edge Files</h1><br/>This menu option allows you to select a file with .edg as itÂ’s extension. This will be used<br/>to populate the <strong>All Tables</strong> column with the table information from the file.</html>");
             tabbedPane.addTab("Edge Files", null, openEdgeTab, "Opening edge files");
             
             JComponent openSaveFileTab = makeTextPanel("<html><h1>Opening Save Files</h1></br>This menu option allows you to select a file that has the .sav file extension. This allows<br/>you to reuse a file that you have saved in this program before.</html>");
