@@ -1161,6 +1161,9 @@ public class EdgeConvertGUI {
          while (outputDir == null) {
             JOptionPane.showMessageDialog(null, "You have not selected a path that contains valid output definition files yet.\nPlease select a path now.");
             setOutputDir();
+            if (sqlString.equals(EdgeConvertGUI.CANCELLED)) {
+               return;
+            }
          }
          getOutputClasses(); //in case outputDir was set before a file was loaded and EdgeTable/EdgeField objects created
          sqlString = getSQLStatements();
@@ -1297,7 +1300,7 @@ public class EdgeConvertGUI {
             JComponent openEdgeTab = makeTextPanel("<html><h1>All Tables Section</h1><br/>This section shows all of the tables that have been imported into the program from the currently loaded file. To edit the fields within a table, click on the table that you wish to edit and select a field from the Field List section.</html>");
             tabbedPane.addTab("All Tables", null, openEdgeTab, "All Tables Section");
             
-            JComponent openSaveFileTab = makeTextPanel("<html><h1>Field List Section</h1></br>This section displays all of the fields for a selected table. If there is no table selected it will be empty. Select a field to edit it’s properties. When you select a field, it’s values will be displayed on the right where you can edit them.</html>");
+            JComponent openSaveFileTab = makeTextPanel("<html><h1>Field List Section</h1></br>This section displays all of the fields for a selected table. If there is no table selected it will be empty. Select a field to edit it's properties. When you select a field, it's values will be displayed on the right where you can edit them.</html>");
             tabbedPane.addTab("Field List", null, openSaveFileTab, "Field List Section");
             
             JComponent saveTab = makeTextPanel("<html><h1>How to Create a DDL</h1></br>To create a DDL you must first Set an Output File Definition Location so that the file may be saved. After you have done this, click the Create DDL button at the bottom of the application. It will ask you to select the database product you want to use and what the database name is. It will then open a file selection screen allowing you to save the file.</html>");
@@ -1317,7 +1320,7 @@ public class EdgeConvertGUI {
          if( (ae.getSource() == jmiDTHelpMenuOptions) || (ae.getSource() == jmiDRHelpMenuOptions) ){
             JTabbedPane tabbedPane = new JTabbedPane();
             
-            JComponent openEdgeTab = makeTextPanel("<html><h1>Opening Edge Files</h1><br/>This menu option allows you to select a file with .edg as itÂ’s extension. This will be used<br/>to populate the <strong>All Tables</strong> column with the table information from the file.</html>");
+            JComponent openEdgeTab = makeTextPanel("<html><h1>Opening Edge Files</h1><br/>This menu option allows you to select a file with .edg as it's extension. This will be used<br/>to populate the <strong>All Tables</strong> column with the table information from the file.</html>");
             tabbedPane.addTab("Edge Files", null, openEdgeTab, "Opening edge files");
             
             JComponent openSaveFileTab = makeTextPanel("<html><h1>Opening Save Files</h1></br>This menu option allows you to select a file that has the .sav file extension. This allows<br/>you to reuse a file that you have saved in this program before.</html>");
@@ -1358,7 +1361,7 @@ public class EdgeConvertGUI {
             JComponent relatedTablesTab = makeTextPanel("<html><h1>Related Tables Section</h1></br>If a table has not been selected in the Tables With Relations section, there<br/>will be no data within this section. When you select a table from this </br>section it will then display all the fields within that table that have relations.</html>");
             tabbedPane.addTab("Related Tables", null, relatedTablesTab, "Related Tables");
             
-            JComponent bindingAndUnbindingRelationsTab = makeTextPanel("<html><h1>Binding/Unbinding Relations</h1></br>To bind or unbind two fields you must first select the two fields you wish </br>to bind/unbind within the Fields in Tables with Relations section and the </br>Fields in Related Tables section. After the two fields are selected press the </br>button located towards the bottom of the application that says “Bind/Unbind </br>Relation”. If the two fields are already bound it will ask for </br>confirmation before unbinding the fields. If the fields are not bound, pressing the button </br>will bind them together.</html>");
+            JComponent bindingAndUnbindingRelationsTab = makeTextPanel("<html><h1>Binding/Unbinding Relations</h1></br>To bind or unbind two fields you must first select the two fields you wish </br>to bind/unbind within the Fields in Tables with Relations section and the </br>Fields in Related Tables section. After the two fields are selected press the </br>button located towards the bottom of the application that says Bind/Unbind </br>Relation. If the two fields are already bound it will ask for </br>confirmation before unbinding the fields. If the fields are not bound, pressing the button </br>will bind them together.</html>");
             tabbedPane.addTab("Binding/Unbinding Relations", null, bindingAndUnbindingRelationsTab, "Binding/Unbinding Relations");
             
             JFrame helpBox = new JFrame();
