@@ -1004,8 +1004,8 @@ public class EdgeConvertGUI {
                   objOutput = conResultClass.newInstance(args);
                }
                alSubclasses.add(objOutput);
-               Method getProductName = resultClass.getMethod("getProductName", null);
-               String productName = (String)getProductName.invoke(objOutput, null);
+               Method getProductName = resultClass.getMethod("getProductName"); //, null
+               String productName = (String)getProductName.invoke(objOutput); //, null
                alProductNames.add(productName);
             }
          }
@@ -1050,10 +1050,10 @@ public class EdgeConvertGUI {
 
       try {
          Class selectedSubclass = objSubclasses[selected].getClass();
-         Method getSQLString = selectedSubclass.getMethod("getSQLString", null);
-         Method getDatabaseName = selectedSubclass.getMethod("getDatabaseName", null);
-         strSQLString = (String)getSQLString.invoke(objSubclasses[selected], null);
-         databaseName = (String)getDatabaseName.invoke(objSubclasses[selected], null);
+         Method getSQLString = selectedSubclass.getMethod("getSQLString"); //, null
+         Method getDatabaseName = selectedSubclass.getMethod("getDatabaseName"); //, null
+         strSQLString = (String)getSQLString.invoke(objSubclasses[selected]); //, null
+         databaseName = (String)getDatabaseName.invoke(objSubclasses[selected]); //, null
       } catch (IllegalAccessException iae) {
          iae.printStackTrace();
       } catch (NoSuchMethodException nsme) {
@@ -1191,25 +1191,27 @@ public class EdgeConvertGUI {
                parseFile = jfcEdge.getSelectedFile();
                ecfp = new EdgeConvertFileParser(parseFile);
                tables = ecfp.getEdgeTables();
-               for (int i = 0; i < tables.length; i++) {
-                  tables[i].makeArrays();
-               }
-               fields = ecfp.getEdgeFields();
-               ecfp = null;
-               populateLists();
-               saveFile = null;
-               jmiDTSave.setEnabled(false);
-               jmiDRSave.setEnabled(false);
-               jmiDTSaveAs.setEnabled(true);
-               jmiDRSaveAs.setEnabled(true);
-               jbDTDefineRelations.setEnabled(true);
+               if (ecfp.checkFailure() == false) {
+                  for (int i = 0; i < tables.length; i++) {
+                     tables[i].makeArrays();
+                  }
+                  fields = ecfp.getEdgeFields();
+                  ecfp = null;
+                  populateLists();
+                  saveFile = null;
+                  jmiDTSave.setEnabled(false);
+                  jmiDRSave.setEnabled(false);
+                  jmiDTSaveAs.setEnabled(true);
+                  jmiDRSaveAs.setEnabled(true);
+                  jbDTDefineRelations.setEnabled(true);
 
-               jbDTCreateDDL.setEnabled(true);
-               jbDRCreateDDL.setEnabled(true);
+                  jbDTCreateDDL.setEnabled(true);
+                  jbDRCreateDDL.setEnabled(true);
                
-               truncatedFilename = parseFile.getName().substring(parseFile.getName().lastIndexOf(File.separator) + 1);
-               jfDT.setTitle(DEFINE_TABLES + " - " + truncatedFilename);
-               jfDR.setTitle(DEFINE_RELATIONS + " - " + truncatedFilename);
+                  truncatedFilename = parseFile.getName().substring(parseFile.getName().lastIndexOf(File.separator) + 1);
+                  jfDT.setTitle(DEFINE_TABLES + " - " + truncatedFilename);
+                  jfDR.setTitle(DEFINE_RELATIONS + " - " + truncatedFilename);
+               } else { }
             } else {
                return;
             }

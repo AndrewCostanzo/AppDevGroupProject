@@ -25,6 +25,7 @@ public class EdgeConvertFileParser {
    public static final String EDGE_ID = "EDGE Diagram File"; //first line of .edg files should be this
    public static final String SAVE_ID = "EdgeConvert Save File"; //first line of save files should be this
    public static final String DELIM = "|";
+   public boolean failure = false; //set to let the gui know if a file fails to be parsed
    
    public EdgeConvertFileParser(File constructorFile) {
       numFigure = 0;
@@ -300,6 +301,7 @@ public class EdgeConvertFileParser {
                this.makeArrays(); //convert ArrayList objects into arrays of the appropriate Class type
             } else { //the file chosen is something else
                JOptionPane.showMessageDialog(null, "Unrecognized file format");
+               setFailure(true); //sets failure to true for failed parse
             }
          }
       } // try
@@ -312,4 +314,12 @@ public class EdgeConvertFileParser {
          System.exit(0);
       } // catch IOException
    } // openFile()
+   
+   public void setFailure(boolean bool_) {
+      failure = bool_;
+   }
+   
+   public boolean checkFailure() {
+      return failure;
+   }
 } // EdgeConvertFileHandler
