@@ -1,6 +1,6 @@
 import java.util.StringTokenizer;
 
-public class EdgeField {
+public class EdgeField implements GeneralField{
    private int numFigure, tableID, tableBound, fieldBound, dataType, varcharValue;
    private String name, defaultValue;
    private boolean disallowNull, isPrimaryKey;

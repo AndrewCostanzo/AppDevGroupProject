@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 
-public class EdgeConvertFileParser {
+public class EdgeConvertFileParser extends GeneralFileParser{
    //private String filename = "test.edg";
    private File parseFile;
    private FileReader fr;
@@ -129,7 +129,7 @@ public class EdgeConvertFileParser {
       } // while()
    } // parseEdgeFile()
    
-   private void resolveConnectors() { //Identify nature of Connector endpoints
+   public void resolveConnectors() { //Identify nature of Connector endpoints
       int endPoint1, endPoint2;
       int fieldIndex = 0, table1Index = 0, table2Index = 0;
       for (int cIndex = 0; cIndex < connectors.length; cIndex++) {
@@ -252,7 +252,7 @@ public class EdgeConvertFileParser {
       }
    } // parseSaveFile()
 
-   private void makeArrays() { //convert ArrayList objects into arrays of the appropriate Class type
+   public void makeArrays() { //convert ArrayList objects into arrays of the appropriate Class type
       if (alTables != null) {
          tables = (EdgeTable[])alTables.toArray(new EdgeTable[alTables.size()]);
       }
@@ -264,7 +264,7 @@ public class EdgeConvertFileParser {
       }
    }
    
-   private boolean isTableDup(String testTableName) {
+   public boolean isTableDup(String testTableName) {
       for (int i = 0; i < alTables.size(); i++) {
          EdgeTable tempTable = (EdgeTable)alTables.get(i);
          if (tempTable.getName().equals(testTableName)) {

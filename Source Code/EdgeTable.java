@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class EdgeTable {
+public class EdgeTable implements GeneralTable{
    private int numFigure;
    private String name;
    private ArrayList alRelatedTables, alNativeFields;

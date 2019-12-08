@@ -5,7 +5,7 @@ import javax.swing.event.*;
 import java.io.*;
 import java.util.*;
 
-public abstract class EdgeConvertCreateDDL {
+public abstract class EdgeConvertCreateDDL implements GeneralConvertCreateDDL{
    static String[] products = {"MySQL"};
    protected EdgeTable[] tables; //master copy of EdgeTable objects
    protected EdgeField[] fields; //master copy of EdgeField objects
@@ -44,7 +44,7 @@ public abstract class EdgeConvertCreateDDL {
       }
    }
    
-   protected EdgeTable getTable(int numFigure) {
+   public EdgeTable getTable(int numFigure) {
       for (int tIndex = 0; tIndex < tables.length; tIndex++) {
          if (numFigure == tables[tIndex].getNumFigure()) {
             return tables[tIndex];
@@ -53,7 +53,7 @@ public abstract class EdgeConvertCreateDDL {
       return null;
    }
    
-   protected EdgeField getField(int numFigure) {
+   public EdgeField getField(int numFigure) {
       for (int fIndex = 0; fIndex < fields.length; fIndex++) {
          if (numFigure == fields[fIndex].getNumFigure()) {
             return fields[fIndex];
