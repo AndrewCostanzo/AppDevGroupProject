@@ -16,8 +16,8 @@ public class EdgeConvertGUI {
    public static final String DEFINE_TABLES = "Define Tables";
    public static final String DEFINE_RELATIONS = "Define Relations";
    public static final String CANCELLED = "CANCELLED";
-   private static JFileChooser jfcEdge, jfcGetClass, jfcOutputDir;
-   private static ExampleFileFilter effEdge, effSave, effClass;
+   private static JFileChooser jfcInput, jfcGetClass, jfcOutputDir;
+   private static ExampleFileFilter effEdge, effSql, effSave, effClass;
    private File parseFile, saveFile, outputFile, outputDir, outputDirOld;
    private String truncatedFilename;
    private String sqlString;
@@ -37,6 +37,7 @@ public class EdgeConvertGUI {
    private boolean dataSaved = true;
    private ArrayList alSubclasses, alProductNames;
    private String[] productNames;
+   private String[] supportedFileTypes;
    private Object[] objSubclasses;
 
    //Define Tables screen objects
@@ -54,7 +55,7 @@ public class EdgeConvertGUI {
    static DefaultListModel dlmDTTablesAll, dlmDTFieldsTablesAll;
    static JMenuBar jmbDTMenuBar;
    static JMenu jmDTFile, jmDTOptions, jmDTHelp;
-   static JMenuItem jmiDTOpenEdge, jmiDTOpenSave, jmiDTSave, jmiDTSaveAs, jmiDTExit, jmiDTOptionsOutputLocation, jmiDTOptionsShowProducts, jmiDTHelpAbout, jmiDTHelpMenuOptions, jmiDTHelpDefineRelationsPage;
+   static JMenuItem jmiDTOpenInputFile, jmiDTOpenSave, jmiDTSave, jmiDTSaveAs, jmiDTExit, jmiDTOptionsOutputLocation, jmiDTOptionsShowProducts, jmiDTHelpAbout, jmiDTHelpMenuOptions, jmiDTHelpDefineRelationsPage;
    
    //Define Relations screen objects
    static JFrame jfDR;
@@ -66,13 +67,15 @@ public class EdgeConvertGUI {
    static JScrollPane jspDRTablesRelations, jspDRTablesRelatedTo, jspDRFieldsTablesRelations, jspDRFieldsTablesRelatedTo;
    static JMenuBar jmbDRMenuBar;
    static JMenu jmDRFile, jmDROptions, jmDRHelp;
-   static JMenuItem jmiDROpenEdge, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout, jmiDRHelpMenuOptions, jmiDTHelpDefineTables, jmiDRHelpDefineRelationsPage;
+   static JMenuItem jmiDROpenEdge, jmiDROpenInputFile, jmiDROpenSave, jmiDRSave, jmiDRSaveAs, jmiDRExit, jmiDROptionsOutputLocation, jmiDROptionsShowProducts, jmiDRHelpAbout, jmiDRHelpMenuOptions, jmiDTHelpDefineTables, jmiDRHelpDefineRelationsPage;
    
    public EdgeConvertGUI() {
       menuListener = new EdgeMenuListener();
       radioListener = new EdgeRadioButtonListener();
       edgeWindowListener = new EdgeWindowListener();
       createDDLListener = new CreateDDLButtonListener();
+      supportedFileTypes = new String[1]; //use this to change how many file types you want to support
+      supportedFileTypes[0] = "edg"; //add the supported file extensions here
       this.showGUI();
    } // EdgeConvertGUI.EdgeConvertGUI()
    
@@ -103,9 +106,9 @@ public class EdgeConvertGUI {
       jmDTFile = new JMenu("File");
       jmDTFile.setMnemonic(KeyEvent.VK_F);
       jmbDTMenuBar.add(jmDTFile);
-      jmiDTOpenEdge = new JMenuItem("Open Edge File");
-      jmiDTOpenEdge.setMnemonic(KeyEvent.VK_E);
-      jmiDTOpenEdge.addActionListener(menuListener);
+      jmiDTOpenInputFile = new JMenuItem("Open Input File");
+      jmiDTOpenInputFile.setMnemonic(KeyEvent.VK_I);
+      jmiDTOpenInputFile.addActionListener(menuListener);
       jmiDTOpenSave = new JMenuItem("Open Save File");
       jmiDTOpenSave.setMnemonic(KeyEvent.VK_V);
       jmiDTOpenSave.addActionListener(menuListener);
@@ -120,7 +123,7 @@ public class EdgeConvertGUI {
       jmiDTExit = new JMenuItem("Exit");
       jmiDTExit.setMnemonic(KeyEvent.VK_X);
       jmiDTExit.addActionListener(menuListener);
-      jmDTFile.add(jmiDTOpenEdge);
+      jmDTFile.add(jmiDTOpenInputFile);
       jmDTFile.add(jmiDTOpenSave);
       jmDTFile.add(jmiDTSave);
       jmDTFile.add(jmiDTSaveAs);
@@ -161,7 +164,7 @@ public class EdgeConvertGUI {
       jmDTHelp.add(jmiDTHelpDefineRelationsPage);
       jmDTHelp.add(jmiDTHelpMenuOptions);
 
-      jfcEdge = new JFileChooser();
+      jfcInput = new JFileChooser();
       jfcOutputDir = new JFileChooser();
 	   effEdge = new ExampleFileFilter("edg", "Edge Diagrammer Files");
    	effSave = new ExampleFileFilter("sav", "Edge Convert Save Files");
@@ -885,10 +888,10 @@ public class EdgeConvertGUI {
    
    private void saveAs() {
       int returnVal;
-      jfcEdge.addChoosableFileFilter(effSave);
-      returnVal = jfcEdge.showSaveDialog(null);
+      jfcInput.addChoosableFileFilter(effSave);
+      returnVal = jfcInput.showSaveDialog(null);
       if (returnVal == JFileChooser.APPROVE_OPTION) {
-         saveFile = jfcEdge.getSelectedFile();
+         saveFile = jfcInput.getSelectedFile();
          if (saveFile.exists ()) {
              int response = JOptionPane.showConfirmDialog(null, "Overwrite existing file?", "Confirm Overwrite",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -996,7 +999,7 @@ public class EdgeConvertGUI {
                continue; //ignore all files that are not .class files
             }
             resultClass = Class.forName(resultFiles[i].getName().substring(0, resultFiles[i].getName().lastIndexOf(".")));
-            if (resultClass.getSuperclass().getName().equals("EdgeConvertCreateDDL")) { //only interested in classes that extend EdgeConvertCreateDDL
+            if (resultClass.getSuperclass() != null && resultClass.getSuperclass().getName().equals("EdgeConvertCreateDDL")) { //only interested in classes that extend EdgeConvertCreateDDL
                if (parseFile == null && saveFile == null) {
                   conResultClass = resultClass.getConstructor(paramTypesNull);
                   } else {
@@ -1005,7 +1008,11 @@ public class EdgeConvertGUI {
                }
                alSubclasses.add(objOutput);
                Method getProductName = resultClass.getMethod("getProductName"); //, null
-               String productName = (String)getProductName.invoke(objOutput); //, null
+               System.out.println("getProductName "+getProductName);
+               String productName = "";
+               if(getProductName.invoke(objOutput) != null){
+                  productName = (String)getProductName.invoke(objOutput); //, null
+               }
                alProductNames.add(productName);
             }
          }
@@ -1066,7 +1073,7 @@ public class EdgeConvertGUI {
    }
 
    private void writeSQL(String output) {
-      jfcEdge.resetChoosableFileFilters();
+      jfcInput.resetChoosableFileFilters();
       String str;
       if (parseFile != null) {
          outputFile = new File(parseFile.getAbsolutePath().substring(0, (parseFile.getAbsolutePath().lastIndexOf(File.separator) + 1)) + databaseName + ".sql");
@@ -1076,10 +1083,10 @@ public class EdgeConvertGUI {
       if (databaseName.equals("")) {
          return;
       }
-      jfcEdge.setSelectedFile(outputFile);
-      int returnVal = jfcEdge.showSaveDialog(null);
+      jfcInput.setSelectedFile(outputFile);
+      int returnVal = jfcInput.showSaveDialog(null);
       if (returnVal == JFileChooser.APPROVE_OPTION) {
-         outputFile = jfcEdge.getSelectedFile();
+         outputFile = jfcInput.getSelectedFile();
          if (outputFile.exists ()) {
              int response = JOptionPane.showConfirmDialog(null, "Overwrite existing file?", "Confirm Overwrite",
                                                          JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -1177,7 +1184,8 @@ public class EdgeConvertGUI {
    class EdgeMenuListener implements ActionListener {
       public void actionPerformed(ActionEvent ae) {
          int returnVal;
-         if ((ae.getSource() == jmiDTOpenEdge) || (ae.getSource() == jmiDROpenEdge)) {
+         
+         if ((ae.getSource() == jmiDTOpenInputFile) || (ae.getSource() == jmiDROpenInputFile)) {
             if (!dataSaved) {
                int answer = JOptionPane.showConfirmDialog(null, "You currently have unsaved data. Continue?",
                                                           "Are you sure?", JOptionPane.YES_NO_OPTION);
@@ -1185,37 +1193,63 @@ public class EdgeConvertGUI {
                   return;
                }
             }
-            jfcEdge.addChoosableFileFilter(effEdge);
-            returnVal = jfcEdge.showOpenDialog(null);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-               parseFile = jfcEdge.getSelectedFile();
-               ecfp = new EdgeConvertFileParser(parseFile);
-               tables = ecfp.getEdgeTables();
-               if (ecfp.checkFailure() == false) {
-                  for (int i = 0; i < tables.length; i++) {
-                     tables[i].makeArrays();
-                  }
-                  fields = ecfp.getEdgeFields();
-                  ecfp = null;
-                  populateLists();
-                  saveFile = null;
-                  jmiDTSave.setEnabled(false);
-                  jmiDRSave.setEnabled(false);
-                  jmiDTSaveAs.setEnabled(true);
-                  jmiDRSaveAs.setEnabled(true);
-                  jbDTDefineRelations.setEnabled(true);
-
-                  jbDTCreateDDL.setEnabled(true);
-                  jbDRCreateDDL.setEnabled(true);
-               
-                  truncatedFilename = parseFile.getName().substring(parseFile.getName().lastIndexOf(File.separator) + 1);
-                  jfDT.setTitle(DEFINE_TABLES + " - " + truncatedFilename);
-                  jfDR.setTitle(DEFINE_RELATIONS + " - " + truncatedFilename);
-               } else { }
-            } else {
+            
+            String response = (String)JOptionPane.showInputDialog(
+                    null,
+                    "Select the file extension of the input file you would like to load:",
+                    "Create DDL",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    supportedFileTypes,
+                    null);
+            if (response == null) {
                return;
             }
-            dataSaved = true;
+            
+            int selected;
+            for (selected = 0; selected < supportedFileTypes.length; selected++) {
+               if (response.equals(supportedFileTypes[selected])) {
+                  break;
+               }
+            }
+            
+            switch(response){
+               case "edg":
+                  jfcInput.addChoosableFileFilter(effEdge);
+                  
+                  returnVal = jfcInput.showOpenDialog(null);
+                  if (returnVal == JFileChooser.APPROVE_OPTION) {
+                     parseFile = jfcInput.getSelectedFile();
+                     ecfp = new EdgeConvertFileParser(parseFile);
+                     tables = ecfp.getEdgeTables();
+                     if (ecfp.checkFailure() == false) {
+                        for (int i = 0; i < tables.length; i++) {
+                           tables[i].makeArrays();
+                        }
+                        fields = ecfp.getEdgeFields();
+                        ecfp = null;
+                        populateLists();
+                        saveFile = null;
+                        jmiDTSave.setEnabled(false);
+                        jmiDRSave.setEnabled(false);
+                        jmiDTSaveAs.setEnabled(true);
+                        jmiDRSaveAs.setEnabled(true);
+                        jbDTDefineRelations.setEnabled(true);
+      
+                        jbDTCreateDDL.setEnabled(true);
+                        jbDRCreateDDL.setEnabled(true);
+                     
+                        truncatedFilename = parseFile.getName().substring(parseFile.getName().lastIndexOf(File.separator) + 1);
+                        jfDT.setTitle(DEFINE_TABLES + " - " + truncatedFilename);
+                        jfDR.setTitle(DEFINE_RELATIONS + " - " + truncatedFilename);
+                     } else { }
+                  } else {
+                     return;
+                  }
+                  dataSaved = true;
+                  
+                  break;
+            }
          }
          
          if ((ae.getSource() == jmiDTOpenSave) || (ae.getSource() == jmiDROpenSave)) {
@@ -1226,10 +1260,10 @@ public class EdgeConvertGUI {
                   return;
                }
             }
-            jfcEdge.addChoosableFileFilter(effSave);
-            returnVal = jfcEdge.showOpenDialog(null);
+            jfcInput.addChoosableFileFilter(effSave);
+            returnVal = jfcInput.showOpenDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-               saveFile = jfcEdge.getSelectedFile();
+               saveFile = jfcInput.getSelectedFile();
                ecfp = new EdgeConvertFileParser(saveFile);
                tables = ecfp.getEdgeTables();
                fields = ecfp.getEdgeFields();
